@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<!-- entry : K:V 한 쌍을 지칭하는 단어 -->
+	
+	<!-- 오라클 JDBC 드라이버 클래스명 -->
+	<entry key="driver">oracle.jdbc.driver.OracleDriver</entry>
+
+	<!-- DB 서버 컴퓨터 타입, IP, 포트번호, DB 이름 작성 -->
+	<entry key="url">jdbc:oracle:thin:@localhost:1521:xe</entry>
+
+	<!-- 사용자 계정명 -->
+	<entry key="user">KH_JSW</entry>
+
+	<!-- 사용자 계정 비밀번호 -->	
+	<entry key="pw">KH1234</entry>
+
+
+</properties>
+
