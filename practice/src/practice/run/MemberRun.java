@@ -48,6 +48,9 @@ public class MemberRun {
 				case 2:
 					System.out.print("삭제할 아이디 입력 : ");
 					id = sc.next();
+					
+					
+					
 					break;
 				// 조회
 				case 3: break;

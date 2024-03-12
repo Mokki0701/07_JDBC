@@ -9,6 +9,11 @@ public class nnn {
 		
 		List<String> list = new ArrayList<String>();
 		
+		list.add(null);
+		
+    int[] result;
+    
+    
 	}
 	
 }

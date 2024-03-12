@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.kh.jdbc.model.dto.Department;
+import edu.kh.jdbc.model.dto.Person;
 
 // DAO(Data Access Object) : 데이터(DB, 파일) 접근하는 객체
 // -> SQL 수행, 결과 반환
@@ -119,7 +120,192 @@ public class DepartmentDAO {
 	}
 	
 	
+	public List<Department> selectDepartmentTitle(String title) throws SQLException {
+		
+		List<Department> deptList = null;
+		
+		try {
+			conn = getConnection();
+			
+			String sql 
+			= "SELECT * FROM DEPARTMENT4       "
+			+ "WHERE DEPT_TITLE LIKE '%' || ? || '%'";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, title);
+			
+			rs = pstmt.executeQuery();
+			
+			deptList = new ArrayList<Department>();
+			
+			while(rs.next()) {
+				
+				String deptId = rs.getString("DEPT_ID");
+				String deptTitle = rs.getString("DEPT_TITLE");
+				String locationId = rs.getString("LOCATION_ID");
+				
+				Department dept = new Department(deptId, deptTitle, locationId);
+				
+				deptList.add(dept);
+			}
+			
+			
+		}finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+		
+		return deptList;
+	}
 	
+	// -------------------------------------------------------------------------------------------
+	
+	public int checkDepartment(String title) throws SQLException {
+		int result = 0;
+		
+		try {
+			
+			conn = getConnection();
+			String sql 
+			= "SELECT COUNT(*) FROM DEPARTMENT4 "
+			+ "WHERE DEPT_ID = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, title);
+			
+			rs = pstmt.executeQuery();
+			
+			// while문 보다 if문 사용이 좀 더 효율적!
+			// (언제?? 조회 결과가 1행만 있을 경우)
+			if(rs.next()) {
+				
+			// result = rs.getInt("COUNT(*)"); // 조회된 컬럼명
+			result = rs.getInt(1); // 조회된 컬럼 순서
+			
+			}
+	
+			
+		} finally {
+			rs.close();
+			close(pstmt);
+			conn.close();
+		}
+		
+		
+		return result;
+	}
+	
+	// -------------------------------------------------------------------------------------------
+	
+	public int deleteDepartment(String code) throws SQLException {
+		int result = 0;
+		
+		try {
+			
+			conn = getConnection();
+			String sql  = "DELETE FROM DEPARTMENT4 WHERE DEPT_ID = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, code);
+			
+			result = pstmt.executeUpdate();
+			
+			if(result > 0)	commit(conn);
+			else						rollback(conn);
+			
+		}finally {
+			pstmt.close();
+			conn.close();
+		}
+		
+		return result;
+	}
+
+	public int changeDepartment(String code, String title, String inputTitle) throws SQLException {
+
+		int result = 0;
+		
+		try {
+			
+			conn = getConnection();
+			String sql = "UPDATE DEPARTMENT4 \r\n"
+					+ "SET DEPT_TITLE  = ? \r\n"
+					+ "WHERE DEPT_ID = ? "
+					+ "AND DEPT_TITLE = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, inputTitle);
+			pstmt.setString(2, code);
+			pstmt.setString(3, title);
+			
+			result = pstmt.executeUpdate();
+			
+			// 트랜잭션 제어처리
+			if(result > 0) commit (conn);
+			else					 rollback(conn);
+			
+		}finally {
+			pstmt.close();
+			conn.close();
+		}
+		
+		
+		return result;
+	}
+
+	
+	public List<Person> selectPerson(String code, String title) throws SQLException {
+		
+		List<Person> deptList = new ArrayList<Person>();
+
+		
+		try {
+			
+			conn = getConnection();
+			
+			
+			String sql = "SELECT EMP_ID, EMP_NAME, PHONE, DEPT_TITLE, LOCATION_ID \r\n"
+					+ "FROM EMPLOYEE\r\n"
+					+ "JOIN DEPARTMENT4 ON(DEPT_ID = DEPT_CODE)\r\n"
+					+ "WHERE DEPT_ID = ?\r\n"
+					+ "AND DEPT_TITLE = ?\r\n";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, code);
+			pstmt.setString(2, title);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String empId = rs.getString("EMP_ID");
+				String empName = rs.getString("EMP_NAME");
+				String phone = rs.getString("PHONE");
+				String deptTitle = rs.getString("DEPT_TITLE");
+				String locationId = rs.getString("LOCATION_ID");
+				
+				Person pr = new Person(empId, empName, phone, deptTitle, locationId);
+				
+				deptList.add(pr);
+				
+			}
+			
+		}finally {
+			rs.close();
+			pstmt.close();
+			conn.close();
+		}
+	
+		
+		
+		return deptList;
+	}
+
 	
 	
 	
