@@ -16,4 +16,12 @@ public interface DepartmentDAO {
 	 */
 	List<Department> selectAll(Connection conn) throws SQLException;
 
+	/**
+	 * @param conn
+	 * @param dept
+	 * @return result
+	 * @throws SQLException
+	 */
+	int insertDepartment(Connection conn, Department dept) throws SQLException;
+
 }

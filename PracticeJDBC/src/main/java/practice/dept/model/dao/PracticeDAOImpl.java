@@ -37,6 +37,8 @@ public class PracticeDAOImpl implements PracticeDAO {
 	
 	}
 	
+	// ------------------------------------------------------------------------------
+	
 	@Override
 	public List<Department> selectAll(Connection conn) throws SQLException {
 		
@@ -48,7 +50,7 @@ public class PracticeDAOImpl implements PracticeDAO {
 			
 			stmt = conn.createStatement();
 			
-			rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql); 
 			
 			while(rs.next()) {
 				
@@ -86,7 +88,7 @@ public class PracticeDAOImpl implements PracticeDAO {
 			pstmt.setString(2, deptTitle);
 			pstmt.setString(3, locationId);
 			
-			result = pstmt.executeUpdate();
+			result = pstmt.executeUpdate(); // 여기서 PRIMARY KEY에 의한 무결성 제약 조건 발생
 			
 		}finally {
 			pstmt.close();
@@ -94,6 +96,85 @@ public class PracticeDAOImpl implements PracticeDAO {
 		
 		return result;
 	}
+
+	// --------------------------------------------------------------------------------------
+
+	
+	@Override
+	public List<Department> search(String search, Connection conn) throws SQLException {
+
+		List<Department> deptList = new ArrayList<Department>();
+		
+		try {
+			String sql = prop.getProperty("search");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, search);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String deptId = rs.getString("DEPT_ID");
+				String deptTitle = rs.getString("DEPT_TITLE");
+				String locationId = rs.getString("LOCATION_ID");
+				
+				Department dept = new Department(deptId, deptTitle, locationId);
+				
+				System.out.println(dept.toString());
+				
+				deptList.add(dept);
+				
+			}
+		}finally {
+			rs.close();
+			pstmt.close();
+		}
+	
+		return deptList;
+	}
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 

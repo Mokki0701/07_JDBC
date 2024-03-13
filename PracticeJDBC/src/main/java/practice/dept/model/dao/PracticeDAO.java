@@ -13,4 +13,9 @@ public interface PracticeDAO {
 
 	int insert(String deptId, String deptTitle, String locationId, Connection conn) throws SQLException;
 
+
+	List<Department> search(String search, Connection conn) throws SQLException;
+
+
+
 }

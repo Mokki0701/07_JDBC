@@ -12,6 +12,10 @@
 	 	VALUES(?,?,?)
 	 </entry>
 	
+	<entry key="search">
+		SELECT * FROM DEPARTMENT4
+		WHERE DEPT_TITLE LIKE '%' || ? || '%'
+	</entry>
 	
 
 

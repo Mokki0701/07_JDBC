@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import practice.dept.exception.PracticeInsertException;
 import practice.dept.model.service.PracticeService;
 import practice.dept.model.service.PracticeServiceImpl;
 
@@ -46,12 +47,20 @@ public class Insert extends HttpServlet {
 			HttpSession session = req.getSession();
 			session.setAttribute("message", message);
 			
-			resp.sendRedirect("/index.html");
+			resp.sendRedirect("/");
 			
 			
 			
 			
-		} catch (SQLException e) {
+		} catch (PracticeInsertException e) {
+			
+			req.setAttribute("errorMessage", e.getMessage());
+			
+			String path = "/WEB-INF/view/exception.jsp";
+			req.getRequestDispatcher(path).forward(req, resp);
+			
+			
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
