@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import pracice.dept.model.dto.Department;
+import practice.dept.model.dto.Department;
 
 public class PracticeDAOImpl implements PracticeDAO {
 
@@ -133,6 +133,29 @@ public class PracticeDAOImpl implements PracticeDAO {
 	
 		return deptList;
 	}
+
+	@Override
+	public int deleteDepartment(Connection conn, String deptId) throws SQLException {
+		int result = 0;
+		
+		try {
+			
+			String sql = prop.getProperty("delete");
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, deptId);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			
+			pstmt.close();
+			
+		}
+		
+		return result;
+	}
+
 	
 	
 	

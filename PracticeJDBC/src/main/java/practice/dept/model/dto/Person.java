@@ -1,4 +1,4 @@
-package pracice.dept.model.dto;
+package practice.dept.model.dto;
 
 public class Person {
 	

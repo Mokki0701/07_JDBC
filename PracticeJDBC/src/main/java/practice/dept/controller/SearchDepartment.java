@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import pracice.dept.model.dto.Department;
+import practice.dept.model.dto.Department;
 import practice.dept.model.service.PracticeService;
 import practice.dept.model.service.PracticeServiceImpl;
 

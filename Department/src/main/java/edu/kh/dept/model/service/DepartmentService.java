@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import edu.kh.dept.model.dto.Department;
+import edu.kh.dept.model.exception.DepartmentDeleteException;
 import edu.kh.dept.model.exception.DepartmentInsertException;
 
 public interface DepartmentService {
@@ -25,6 +26,36 @@ public interface DepartmentService {
 	 * @throws SQLException
 	 */
 	int insertDepartment(Department dept) throws DepartmentInsertException;
+
+
+	/**
+	 * @param deptList
+	 * @return result
+	 * @throws DepartmentInsertException
+	 */
+	int multiInsert(List<Department> deptList) throws DepartmentInsertException;
+
+
+	/**
+	 * @param deptId
+	 * @return
+	 * @throws DepartmentDeleteException
+	 */
+	int delete(String deptId) throws DepartmentDeleteException;
+
+
+	/**
+	 * @param deptId
+	 * @return dept
+	 * @throws SQLException
+	 */
+	Department selectOne(String deptId) throws SQLException;
+
+
+	int updateDepartment(Department dept) throws SQLException;
+
+
+	List<Department> searchDepartment(String keyword) throws SQLException; 
 	
 	
 }

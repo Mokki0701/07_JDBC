@@ -17,6 +17,11 @@
 		WHERE DEPT_TITLE LIKE '%' || ? || '%'
 	</entry>
 	
+	<entry key="delete">
+		DELETE FROM DEPARTMENT4
+		WHERE DEPT_ID = ?
+	</entry>
+	
 
 
 </properties>

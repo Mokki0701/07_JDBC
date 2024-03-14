@@ -22,6 +22,9 @@
 				<th>부서 코드(DEPT_ID)</th>
 				<th>부서 명(DEPT_TITLE)</th>
 				<th>지역 코드(LOCATION_ID)</th>
+				
+				<th>수정 버튼</th>
+				<th>삭제 버튼</th>
 			</tr>
 		</thead>
 		
@@ -34,6 +37,15 @@
 					<td>${dept.deptId}</td>					
 					<td>${dept.deptTitle}</td>
 					<td>${dept.locationId}</td>
+					
+					<th>
+						<button type="button" class="update-btn">수정</button>
+					</th>
+
+					<th>
+						<button type="button" class="delete-btn">삭제</button>
+					</th>
+					
 				</tr>
 				
 			</c:forEach>
@@ -42,9 +54,30 @@
 	
 	
 	</table>
+	
+		<%-- session scope로 전달 받은 message가 있으면 alert() 출력 --%>
+	<c:if test="${not empty message}" >
+		<%-- message : 
+			page ~ application까지 message 속성이 있는지 확인해서
+			존재하는 scope의 값을 엉어옴
+		 --%>
+		 <script>
+		 	const message = "${message}";
+			alert(message);
+		 </script>
+
+		<%-- session은 브라우저 종료 또는 만료 시 까지 유지
+		 	-> 현재 페이지에 들어올 때 마다 session의 message가 계속 출력되는
+				문제가 발생!!
+			-> 1회만 message를 출력한 후 제거
+		 --%>
+		<c:remove var="message" scope="session" />
+
+	</c:if>
+	
 
 
-
+	<script src="/resources/js/selectAll.js"></script>
 
 </body>
 </html>

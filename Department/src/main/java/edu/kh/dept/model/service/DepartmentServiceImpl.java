@@ -4,12 +4,14 @@ import static edu.kh.dept.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import edu.kh.dept.common.JDBCTemplate;
 import edu.kh.dept.model.dao.DepartmentDAO;
 import edu.kh.dept.model.dao.DepartmentDAOImpl;
 import edu.kh.dept.model.dto.Department;
+import edu.kh.dept.model.exception.DepartmentDeleteException;
 import edu.kh.dept.model.exception.DepartmentInsertException;
 
 // Service 
@@ -85,6 +87,144 @@ public class DepartmentServiceImpl implements DepartmentService {
 		
 		// 5. 결과 반환
 		return  result;
+	}
+
+	//----------------------------------------------------------------------------------
+	
+	// 여러 부서 추가
+	 @Override
+	public int multiInsert(List<Department> deptList) throws DepartmentInsertException {
+		
+		// 1. Connection 얻어오기
+		Connection conn = getConnection();
+		
+		int result = 0; // 삽입된 행의 개수 누적
+		String currentDeptId = null; // 현재 삽입 하려는 부서 코드를 저장하는 변수
+		
+		try {
+			
+			// 2. 전달 받은 deptList의 크기(길이) 만큼 반복하며
+			// DB에 INSERT하는 DAO 메서드 호출
+			
+			for(Department dept: deptList) {
+				
+				currentDeptId = dept.getDeptId();
+				
+				result += dao.insertDepartment(conn, dept);
+			}
+			
+			// 3. 트랜잭션 제어 처리
+			// result에 누적된 값(== 삽입 성공한 행의 개수)과
+			// deptList의 길이가 같은 경우
+			// == 모두 삽입 성공한 경우 -> commmit
+			
+			// result != deptList의 길이
+			// == 하나라도 삽입 실패한 경우 -> rollback
+			if(result == deptList.size()) commit(conn);
+			else													rollback(conn);
+			
+		}catch(SQLException e) {
+			
+			// 4. SQL 수행 중 오류 발생 시
+			// (PK, NOT NULL 제약조건 위배, 데이터 크기 초과, DB 연결 종료)
+			
+			e.printStackTrace();
+			rollback(conn); // SQL이 하나라도 실패하면 정체 rollback
+			
+			// 예외가 발생이 되었음을 Controller(Servlet)에 전달 하기
+			// -> 사용자 정의 예외 강제 발생
+			throw new DepartmentInsertException(currentDeptId +"부서 코드가 이미 존재 합니다");
+			
+		} finally {
+			// 사용 완료된 커넥션 반환
+			close(conn);
+		}
+		
+		return result;
+	}
+
+	 // ---------------------------------------------------------------------------
+	 
+	@Override
+	public int delete(String deptId) throws DepartmentDeleteException {
+		
+		Connection conn = getConnection();
+		
+		int result = 0;
+		
+		try {
+			DepartmentDAO dao = new DepartmentDAOImpl();
+			
+			result = dao.delete(conn, deptId);
+			
+			if(result > 0) commit(conn);
+			else					 rollback(conn);			
+		}catch(SQLException e) {
+			
+			// 공부할게 많은데 겁나 재밌누
+			e.printStackTrace();
+			rollback(conn);
+			
+			throw new DepartmentDeleteException(deptId + " 이 부서는 삭제할 수 없습니다");
+		}finally {
+			close(conn);
+		}
+		
+		
+		return result;
+	}
+	
+	// -------------------------------------------------------------
+
+	@Override
+	public Department selectOne(String deptId) throws SQLException {
+		
+		Connection conn = getConnection();
+		DepartmentDAO dao = new DepartmentDAOImpl();
+		
+		Department dept = dao.selectOne(conn,deptId);
+		
+		close(conn);
+		
+		return dept;
+	}
+	
+	// -------------------------------------------------------------
+
+	@Override
+	public int updateDepartment(Department dept) throws SQLException {
+		
+		int result = 0;
+		Connection conn = getConnection();
+		
+		DepartmentDAO dao = new DepartmentDAOImpl();
+		
+		result = dao.updateDepartment(conn, dept);
+		
+		System.out.println(result);
+		
+		if(result > 0) commit(conn);
+		else					 rollback(conn);
+		
+		close(conn);
+		
+		return result;
+	}
+
+	// -------------------------------------------------------------------------------------
+	
+	@Override
+	public List<Department> searchDepartment(String keyword) throws SQLException {
+		
+		Connection conn = getConnection();
+		
+		DepartmentDAO dao = new DepartmentDAOImpl();
+		
+		List<Department> deptList = dao.searchDepartment(conn, keyword);
+		
+		close(conn);
+			
+		return deptList;
 	}
 	
 	

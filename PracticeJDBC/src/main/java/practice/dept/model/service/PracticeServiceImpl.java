@@ -6,11 +6,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import pracice.dept.model.dto.Department;
 import practice.dept.common.JDBCTemplate;
 import practice.dept.exception.PracticeInsertException;
 import practice.dept.model.dao.PracticeDAO;
 import practice.dept.model.dao.PracticeDAOImpl;
+import practice.dept.model.dto.Department;
 
 public class PracticeServiceImpl implements PracticeService {
 
@@ -67,6 +67,54 @@ public class PracticeServiceImpl implements PracticeService {
 		conn.close();
 		
 		return deptList;
+	}
+
+	// -------------------------------------------------------------------------------
+	
+	@Override
+	public int multiInsert(List<Department> deptList) throws PracticeInsertException {
+		
+		int result = 0;
+		Connection conn = getConnection();
+		
+		try {
+			for(Department dept : deptList) result += pd.insert(dept.getDeptId(), dept.getDeptTitle(), dept.getLocationId(), conn);		
+			
+			if(result == deptList.size()) commit(conn);
+			else													rollback(conn);
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			
+			rollback(conn);
+			
+			throw new PracticeInsertException("해당 부서는 이미 존재합니다.");
+						
+		} finally {
+			close(conn);
+		}
+		
+		
+		
+		return result;
+	}
+
+	// ------------------------------------------------------------------
+	
+	@Override
+	public int deleteDepartment(String deptId) throws SQLException {
+		int result = 0;
+		Connection conn = getConnection();
+		
+		result = pd.deleteDepartment(conn, deptId);
+		
+		if(result > 0) commit(conn);
+		else					 rollback(conn);
+		
+		close(conn);
+		
+		return result;
 	}
 
 	
