@@ -5,6 +5,7 @@ import java.util.List;
 
 import practice.dept.exception.PracticeInsertException;
 import practice.dept.model.dto.Department;
+import practice.dept.model.dto.Person;
 
 public interface PracticeService {
 
@@ -17,6 +18,8 @@ public interface PracticeService {
 	int multiInsert(List<Department> deptList) throws PracticeInsertException;
 
 	int deleteDepartment(String deptId) throws SQLException;
+
+	List<Person> searchEmployee(String deptId) throws SQLException;
 
 
 }

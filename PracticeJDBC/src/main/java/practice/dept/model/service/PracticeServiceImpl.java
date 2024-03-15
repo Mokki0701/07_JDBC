@@ -11,6 +11,7 @@ import practice.dept.exception.PracticeInsertException;
 import practice.dept.model.dao.PracticeDAO;
 import practice.dept.model.dao.PracticeDAOImpl;
 import practice.dept.model.dto.Department;
+import practice.dept.model.dto.Person;
 
 public class PracticeServiceImpl implements PracticeService {
 
@@ -115,6 +116,18 @@ public class PracticeServiceImpl implements PracticeService {
 		close(conn);
 		
 		return result;
+	}
+
+	@Override
+	public List<Person> searchEmployee(String deptId) throws SQLException {
+		
+		Connection conn = getConnection();
+		
+		List<Person> person = pd.searchEmployee(conn, deptId);
+		
+		close(conn);
+		
+		return person;
 	}
 
 	

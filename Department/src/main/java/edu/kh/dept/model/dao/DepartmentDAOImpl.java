@@ -215,6 +215,10 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
+				String deptId = rs.getString(1); // 조회 결과 컬럼 순서 (1번 컬럼)
+				String deptTitle = rs.getString(2); // 조회 결과 컬럼 순서 (2번 컬럼)
+				String location = rs.getString(3); // 조회 결과 컬럼 순서 (3번 컬럼)
+				
 				Department dept = new Department(rs.getString("DEPT_ID"), rs.getString("DEPT_TITLE"), rs.getString("LOCATION_ID"));
 				deptList.add(dept);
 			}

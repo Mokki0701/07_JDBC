@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Properties;
 
 import practice.dept.model.dto.Department;
+import practice.dept.model.dto.Person;
 
 public class PracticeDAOImpl implements PracticeDAO {
 
@@ -154,6 +155,40 @@ public class PracticeDAOImpl implements PracticeDAO {
 		}
 		
 		return result;
+	}
+	
+	// --------------------------------------------------------------------------------
+
+	@Override
+	public List<Person> searchEmployee(Connection conn, String deptId) throws SQLException {
+		
+		List<Person> person = new ArrayList<Person>();
+		
+		try {
+			
+			String sql = prop.getProperty("employee");
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, deptId);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				Person ps = new Person(rs.getString("EMP_ID"), rs.getString("EMP_NAME"), rs.getString("PHONE"), rs.getString("DEPT_TITLE"), rs.getString("LOCATION_ID"));
+				person.add(ps);
+				
+				System.out.println(ps.toString());
+				
+			}
+			
+			
+		}finally {
+			rs.close();
+			pstmt.close();
+		}
+		
+		return person;
 	}
 
 	

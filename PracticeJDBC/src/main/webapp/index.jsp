@@ -34,5 +34,15 @@
     </form>
 
     <h1>${message}</h1>
+
+    <h3>부서명으로 검색하여 직원 조회</h3>
+
+    <form action="/deaprtment/employee" method="GET">
+        검색어 입력 :
+        <input type="text" name="employee">
+
+        <button>조회</button>
+    
+    </form>
 </body>
 </html>

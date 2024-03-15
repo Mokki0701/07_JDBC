@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import practice.dept.model.dto.Department;
+import practice.dept.model.dto.Person;
 
 public interface PracticeDAO {
 
@@ -18,6 +19,9 @@ public interface PracticeDAO {
 
 
 	int deleteDepartment(Connection conn, String deptId) throws SQLException;
+
+
+	List<Person> searchEmployee(Connection conn, String deptId) throws SQLException;
 
 
 

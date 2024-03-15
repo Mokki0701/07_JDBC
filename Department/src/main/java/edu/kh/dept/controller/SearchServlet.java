@@ -29,19 +29,21 @@ public class SearchServlet extends HttpServlet{
 			
 			deptList = service.searchDepartment(keyword);			
 			
-			if(deptList.isEmpty()) {
-				message = "해당 검색어에 대한 결과가 존재하지 않습니다";
-				HttpSession session = req.getSession();
-				session.setAttribute("message", message);
-				resp.sendRedirect("/");
-			}else {
-				// forward할 JSP 경로
-				String path = "/WEB-INF/views/search.jsp";
-				req.setAttribute("deptList", deptList);
-				
-				req.getRequestDispatcher(path).forward(req, resp);
+			// forward할 JSP 경로
+			String path = "/WEB-INF/views/search.jsp";
+			req.setAttribute("deptList", deptList);
+			
+			if(keyword.isEmpty()) {
+				message = "검색어를 입력하세요.";
+				req.setAttribute("message", message);
+			}
+			else if(deptList.isEmpty()) {
+				message = keyword+"에 대한 검색 결과가 없습니다.";
+				req.setAttribute("message", message);
 			}
 			
+			
+			req.getRequestDispatcher(path).forward(req, resp);			
 			
 			
 		}catch(Exception e) {
