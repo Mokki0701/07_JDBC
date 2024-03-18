@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	
+	<entry key="join">
+		INSERT INTO MEMBERSHIP(BOARD_ID, BOARD_PW, BOARD_NAME,SECURITY_NUM,ADDRESS,MEMBER_NUM, NICKNAME)
+		VALUES(?,?,?,?,?,?,?)
+	</entry>
+	
+	<entry key="login">
+		SELECT * FROM MEMBERSHIP
+		WHERE BOARD_ID = ?
+		AND BOARD_PW =?
+	</entry>
+	
+	<entry key="selectAll">
+		SELECT BOARD_NO, NICKNAME, BOARD_TITLE, TO_CHAR(REGDATE,'YYYY-MM-DD HH24:MI:SS') REGDATE, BOARD_ID FROM BOARDMAIN
+		JOIN MEMBERSHIP USING(NICKNAME)
+		ORDER BY BOARD_NO
+	</entry>
+
+	<entry key="detail">
+		SELECT BOARD_NO, TO_CHAR(REGDATE,'YYYY-MM-DD HH24:MI:SS') REGDATE, NICKNAME, BOARD_TEXT
+		FROM BOARDMAIN
+		WHERE BOARD_NO = ?
+	</entry>
+	
+	<entry key="detail2">
+		SELECT * FROM MEMBERSHIP
+		WHERE BOARD_ID = ?
+	</entry>
+
+	
+	<entry key="boardAdd">
+		INSERT INTO BOARDMAIN(BOARD_NO, NICKNAME, BOARD_TITLE, REGDATE, BOARD_TEXT)
+		VALUES(SEQ_BOARD_NO.NEXTVAL, ? , ? , DEFAULT, ?)
+	</entry>
+	
+	<entry key="memberBoardDetail">
+		SELECT BOARD_NO, NICKNAME, BOARD_TITLE, TO_CHAR(REGDATE,'YYYY-MM-DD HH24:MI:SS') REGDATE, BOARD_ID, BOARD_TEXT
+		FROM BOARDMAIN
+		JOIN MEMBERSHIP USING(NICKNAME)
+		WHERE BOARD_ID = ?
+		ORDER BY BOARD_NO
+	</entry>
+	
+
+</properties>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
