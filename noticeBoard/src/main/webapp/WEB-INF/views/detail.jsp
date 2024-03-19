@@ -48,6 +48,8 @@
 
         <c:remove var="message"/>
     </c:if>
+
+    <form action="/board/logout"><button class="logout-btn">로그아웃</button></form>
     
 </body>
 </html>

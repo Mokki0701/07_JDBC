@@ -32,9 +32,8 @@
 
         </tbody>
     </table>
+    <h1>${boardId}</h1>
+    <form action="/board/logout"><button class="logout-btn">로그아웃</button></form>
 
-    <button class="logout-btn">로그아웃</button>
-
-<script src="/resources/js/logout.js"></script>
 </body>
 </html>

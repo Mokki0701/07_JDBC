@@ -37,6 +37,16 @@
     
     </table>
 
+    <form action="/board/search">
+        <select name="selectOption">
+            <option value="1">제목만</option>
+            <option value="2">내용만</option>
+            <option value="3">제목+내용</option>
+        </select>
+         : <input type="text" name="boardName">
+        <button>검색</button>
+    </form>
+
     <form action="/board/member"><button>개인 정보 조회</button></form>
 
     <c:if test="${not empty message}" >
@@ -46,6 +56,7 @@
 
         <c:remove var="message"/>
     </c:if>
+    <form action="/board/logout"><button class="logout-btn">로그아웃</button></form>
 
 
 

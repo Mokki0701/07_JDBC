@@ -22,5 +22,9 @@ public interface NoticeBoardDAO {
 	Membership detailmember(String boardId, Connection conn) throws SQLException;
 
 	List<Board> memberBoardDetail(Connection conn, String boardId) throws SQLException;
+
+	int updateMember(Membership member,String boardId, Connection conn) throws SQLException;
+
+	List<Board> searchBoard(Connection conn, String boardName, int selectOption) throws SQLException;
 	 
 }

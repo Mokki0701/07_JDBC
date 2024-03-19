@@ -128,6 +128,30 @@ public class NoticeBoardSerivceImpl implements NoticeBoardService {
 	}
 
 	
+	@Override
+	public void updateMember(Membership member, String boardId) throws SQLException {
+		Connection conn = getConnection();
+		
+		int result = dao.updateMember(member,boardId,conn);
+		
+		if(result > 0) commit(conn);
+		else					 rollback(conn);
+		
+		close(conn);
+		
+	}
+
+	@Override
+	public List<Board> searchBoard(String boardName, int selectOption) throws SQLException {
+		Connection conn = getConnection();
+		List<Board> boardList = dao.searchBoard(conn, boardName, selectOption);
+		
+		close(conn);
+		
+		return boardList;
+	}
+
+	
 
 	
 	

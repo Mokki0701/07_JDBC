@@ -37,6 +37,8 @@
     </table>
 
     <form action="/board/memberBoardDetail"><button>게시글 상세 조회</button></form>
+    <form action="/board/updateMember" method="POST"><button>개인 정보 수정</button></form>
+    <form action="/board/logout"><button class="logout-btn">로그아웃</button></form>
 
 <script src="/resources/js/logout.js"></script>
 </body>

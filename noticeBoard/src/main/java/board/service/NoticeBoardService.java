@@ -23,4 +23,8 @@ public interface NoticeBoardService {
 
 	List<Board> memberBoardDetail(String boardId) throws SQLException;
 
+	void updateMember(Membership member, String boardId) throws SQLException;
+
+	List<Board> searchBoard(String boardName, int selectOption) throws SQLException;
+
 }

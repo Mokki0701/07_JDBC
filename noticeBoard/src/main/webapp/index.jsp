@@ -29,6 +29,15 @@
 
         <c:remove var="message"/>
     </c:if>
+
+    <c:if test="${not empty logoutMessage}" >
+        <script>
+            alert("${logoutMessage}")
+        </script>
+
+        <c:remove var="logoutMessage"/>
+    </c:if>
+
     
 </body>
 </html>

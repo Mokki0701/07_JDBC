@@ -247,6 +247,77 @@ public class NoticeBoardDAOImpl implements NoticeBoardDAO {
 		return boardList;
 	}
 
+
+	@Override
+	public int updateMember(Membership member,String boardId, Connection conn) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			String sql = prop.getProperty("updateMember");
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getBoardId());
+			pstmt.setString(2, member.getBoardPw());
+			pstmt.setString(3, member.getBoardName());
+			pstmt.setString(4, member.getSecurityNum());
+			pstmt.setString(5, member.getAddress());
+			pstmt.setInt(6, member.getMemberNum());
+			pstmt.setString(7, boardId);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+
+
+	@Override
+	public List<Board> searchBoard(Connection conn, String boardName, int selectOption) throws SQLException {
+		List<Board> boardList = new ArrayList<Board>();
+		
+		try {
+			
+			String sql = null;
+			if(selectOption == 1) {
+				sql = prop.getProperty("searchBoard1");
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, boardName);
+				
+			} else if(selectOption == 2) {
+				sql = prop.getProperty("searchBoard2");
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, boardName);
+				
+			} else {
+				sql = prop.getProperty("searchBoard3");
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, boardName);
+				pstmt.setString(2, boardName);
+				
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Board board = new Board(Integer.parseInt(rs.getString("BOARD_NO")), rs.getString("NICKNAME"), rs.getString("BOARD_TITLE"),
+						rs.getString("REGDATE"), rs.getString("BOARD_TEXT"),rs.getString("BOARD_ID"));
+				boardList.add(board);
+				System.out.println(board.toString());
+			}
+			
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return boardList;
+	}
+
 	
 	
 	
